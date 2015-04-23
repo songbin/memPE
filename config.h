@@ -47,13 +47,13 @@
 #define HAVE_MLOCKALL 1
 
 /* we have sasl_callback_ft */
-/* #undef HAVE_SASL_CALLBACK_FT */
+#define HAVE_SASL_CALLBACK_FT 1
 
 /* Set to nonzero if your SASL implementation supports SASL_CB_GETCONF */
 /* #undef HAVE_SASL_CB_GETCONF */
 
 /* Define to 1 if you have the <sasl/sasl.h> header file. */
-/* #undef HAVE_SASL_SASL_H */
+#define HAVE_SASL_SASL_H 1
 
 /* Define to 1 if you have the `setppriv' function. */
 /* #undef HAVE_SETPPRIV */

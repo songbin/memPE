@@ -75,9 +75,9 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-build_triplet = i686-pc-linux-gnu
-host_triplet = i686-pc-linux-gnu
-target_triplet = i686-pc-linux-gnu
+build_triplet = x86_64-unknown-linux-gnu
+host_triplet = x86_64-unknown-linux-gnu
+target_triplet = x86_64-unknown-linux-gnu
 #am__append_1 = protocol-binary.txt protocol-binary-range.txt
 subdir = doc
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am
@@ -142,12 +142,12 @@ NROFF = nroff
 MANS = $(man_MANS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/todd/smbshare/codes/owner/workpro/memPE/missing aclocal-1.14
+ACLOCAL = ${SHELL} /home/todd/smbshare/workpro/github/memPE/missing aclocal-1.14
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
-AUTOCONF = ${SHELL} /home/todd/smbshare/codes/owner/workpro/memPE/missing autoconf
-AUTOHEADER = ${SHELL} /home/todd/smbshare/codes/owner/workpro/memPE/missing autoheader
-AUTOMAKE = ${SHELL} /home/todd/smbshare/codes/owner/workpro/memPE/missing automake-1.14
+AUTOCONF = ${SHELL} /home/todd/smbshare/workpro/github/memPE/missing autoconf
+AUTOHEADER = ${SHELL} /home/todd/smbshare/workpro/github/memPE/missing autoheader
+AUTOMAKE = ${SHELL} /home/todd/smbshare/workpro/github/memPE/missing automake-1.14
 AWK = mawk
 CC = gcc -std=gnu99
 CCDEPMODE = depmode=gcc3
@@ -175,7 +175,7 @@ LDFLAGS =
 LIBOBJS = 
 LIBS = -levent 
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /home/todd/smbshare/codes/owner/workpro/memPE/missing makeinfo
+MAKEINFO = ${SHELL} /home/todd/smbshare/workpro/github/memPE/missing makeinfo
 MKDIR_P = /bin/mkdir -p
 OBJEXT = o
 PACKAGE = memcached
@@ -195,10 +195,10 @@ STRIP =
 VERSION = 1.4.22
 XML2RFC = no
 XSLTPROC = no
-abs_builddir = /home/todd/smbshare/codes/owner/workpro/memPE/doc
-abs_srcdir = /home/todd/smbshare/codes/owner/workpro/memPE/doc
-abs_top_builddir = /home/todd/smbshare/codes/owner/workpro/memPE
-abs_top_srcdir = /home/todd/smbshare/codes/owner/workpro/memPE
+abs_builddir = /home/todd/smbshare/workpro/github/memPE/doc
+abs_srcdir = /home/todd/smbshare/workpro/github/memPE/doc
+abs_top_builddir = /home/todd/smbshare/workpro/github/memPE
+abs_top_srcdir = /home/todd/smbshare/workpro/github/memPE
 ac_ct_CC = gcc
 am__include = include
 am__leading_dot = .
@@ -206,26 +206,26 @@ am__quote =
 am__tar = $${TAR-tar} chof - "$$tardir"
 am__untar = $${TAR-tar} xf -
 bindir = ${exec_prefix}/bin
-build = i686-pc-linux-gnu
+build = x86_64-unknown-linux-gnu
 build_alias = 
-build_cpu = i686
+build_cpu = x86_64
 build_os = linux-gnu
-build_vendor = pc
+build_vendor = unknown
 builddir = .
 datadir = ${datarootdir}
 datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
-host = i686-pc-linux-gnu
+host = x86_64-unknown-linux-gnu
 host_alias = 
-host_cpu = i686
+host_cpu = x86_64
 host_os = linux-gnu
-host_vendor = pc
+host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/todd/smbshare/codes/owner/workpro/memPE/install-sh
+install_sh = ${SHELL} /home/todd/smbshare/workpro/github/memPE/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -241,11 +241,11 @@ sbindir = ${exec_prefix}/sbin
 sharedstatedir = ${prefix}/com
 srcdir = .
 sysconfdir = ${prefix}/etc
-target = i686-pc-linux-gnu
+target = x86_64-unknown-linux-gnu
 target_alias = 
-target_cpu = i686
+target_cpu = x86_64
 target_os = linux-gnu
-target_vendor = pc
+target_vendor = unknown
 top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
@@ -492,10 +492,10 @@ uninstall-man: uninstall-man1
 
 
 protocol-binary.txt: $(.TARGET:R).full
-	no -c /home/todd/smbshare/codes/owner/workpro/memPE/doc $(.TARGET:R).full $@
+	no -c /home/todd/smbshare/workpro/github/memPE/doc $(.TARGET:R).full $@
 
 protocol-binary-range.txt: $(.TARGET:R).full
-	no -c /home/todd/smbshare/codes/owner/workpro/memPE/doc $(.TARGET:R).full $@
+	no -c /home/todd/smbshare/workpro/github/memPE/doc $(.TARGET:R).full $@
 
 protocol-binary.full: $(.TARGET:R).xml xml2rfc/rfc2629-noinc.xsl
 	no --nonet xml2rfc/rfc2629-noinc.xsl $(.TARGET:R).xml > $@
