@@ -449,9 +449,10 @@ memcached_SOURCES = memcached.c memcached.h hash.c hash.h \
 	$(am__append_4)
 memcached_debug_SOURCES = $(memcached_SOURCES)
 memcached_CPPFLAGS = -DNDEBUG
-memcached_debug_LDADD = -lgcov $(am__append_9)
-memcached_debug_CFLAGS = -fprofile-arcs -ftest-coverage
-memcached_LDADD = $(am__append_7)
+memcached_debug_LDADD = -lgcov -ltdb -L./thirdlib/ \
+	$(am__append_9)
+memcached_debug_CFLAGS = -fprofile-arcs -ftest-coverage  -ltdb -L./thirdlib/
+memcached_LDADD = -ltdb -L./thirdlib/ $(am__append_7)
 memcached_DEPENDENCIES = $(am__append_8)
 memcached_debug_DEPENDENCIES = $(am__append_10)
 CLEANFILES = $(am__append_6) $(am__append_11)

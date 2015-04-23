@@ -549,7 +549,7 @@ configure:5438: $? = 0
 configure:5474: result: (system)
 configure:5493: checking for library containing umem_cache_create
 configure:5524: gcc -std=gnu99 -o conftest -ggdb -O0 -pthread -pthread   conftest.c -levent  >&5
-/tmp/ccrEle9E.o: In function `main':
+/tmp/cc47D1xe.o: In function `main':
 /home/todd/smbshare/workpro/github/memPE/conftest.c:33: undefined reference to `umem_cache_create'
 collect2: error: ld returned 1 exit status
 configure:5524: $? = 1
@@ -634,7 +634,7 @@ configure: failed program was:
 configure:5541: result: no
 configure:5549: checking for library containing gethugepagesizes
 configure:5580: gcc -std=gnu99 -o conftest -ggdb -O0 -pthread -pthread   conftest.c -levent  >&5
-/tmp/cceXwgoS.o: In function `main':
+/tmp/ccdBvETq.o: In function `main':
 /home/todd/smbshare/workpro/github/memPE/conftest.c:33: undefined reference to `gethugepagesizes'
 collect2: error: ld returned 1 exit status
 configure:5580: $? = 1
@@ -871,7 +871,7 @@ conftest.c: In function 'main':
 conftest.c:38:11: warning: implicit declaration of function 'htonll' [-Wimplicit-function-declaration]
            return htonll(0);
            ^
-/tmp/ccSNA0qx.o: In function `main':
+/tmp/cceIGw6m.o: In function `main':
 /home/todd/smbshare/workpro/github/memPE/conftest.c:38: undefined reference to `htonll'
 collect2: error: ld returned 1 exit status
 configure:6024: $? = 1
@@ -929,7 +929,7 @@ configure:6105: $? = 0
 configure:6105: result: yes
 configure:6116: checking for getpagesizes
 configure:6116: gcc -std=gnu99 -o conftest -ggdb -O0 -pthread -pthread   conftest.c -levent  >&5
-/tmp/cciRjlxS.o: In function `main':
+/tmp/ccRmscOH.o: In function `main':
 /home/todd/smbshare/workpro/github/memPE/conftest.c:62: undefined reference to `getpagesizes'
 collect2: error: ld returned 1 exit status
 configure:6116: $? = 1
@@ -1002,7 +1002,7 @@ configure: failed program was:
 configure:6116: result: no
 configure:6127: checking for memcntl
 configure:6127: gcc -std=gnu99 -o conftest -ggdb -O0 -pthread -pthread   conftest.c -levent  >&5
-/tmp/ccprP8SZ.o: In function `main':
+/tmp/ccxXFuIO.o: In function `main':
 /home/todd/smbshare/workpro/github/memPE/conftest.c:62: undefined reference to `memcntl'
 collect2: error: ld returned 1 exit status
 configure:6127: $? = 1
@@ -1097,7 +1097,7 @@ configure:6263: $? = 0
 configure:6271: result: yes
 configure:6276: checking for setppriv
 configure:6276: gcc -std=gnu99 -o conftest -ggdb -O0 -pthread -pthread   conftest.c -levent  >&5
-/tmp/cc9UXHsv.o: In function `main':
+/tmp/ccKv8gXk.o: In function `main':
 /home/todd/smbshare/workpro/github/memPE/conftest.c:67: undefined reference to `setppriv'
 collect2: error: ld returned 1 exit status
 configure:6276: $? = 1

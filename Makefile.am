@@ -38,10 +38,10 @@ endif
 
 memcached_debug_SOURCES = $(memcached_SOURCES)
 memcached_CPPFLAGS = -DNDEBUG
-memcached_debug_LDADD = @PROFILER_LDFLAGS@
-memcached_debug_CFLAGS = @PROFILER_FLAGS@
+memcached_debug_LDADD = @PROFILER_LDFLAGS@  -ltdb -L./thirdlib/
+memcached_debug_CFLAGS = @PROFILER_FLAGS@  -ltdb -L./thirdlib/
 
-memcached_LDADD =
+memcached_LDADD =  -ltdb -L./thirdlib/
 memcached_DEPENDENCIES =
 memcached_debug_DEPENDENCIES =
 CLEANFILES=
