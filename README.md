@@ -1,4 +1,4 @@
-1.why I did this persistence memcached?
+1.why I did this persisted memcached?
 I just want to search a job in big data filed,I datermined to do sometings so that I can know how to process big data quickly.Memcached is a good project to study big data.
 
 2.why is memcached?
