@@ -14,7 +14,7 @@ void _mkv_process_queue(int fd, short which, void *args);
 int _read_handle( int fd, char **pBuff, int *size );
 int _write_handle( int fd, char *pBuff, int size );
 int mkv_thread_init(void);
-void read_pipe( char *pBuff );
+int  read_pipe( char *pBuff );
 int write_pipe( char *pBuff, int size );
 
 

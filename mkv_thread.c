@@ -334,9 +334,9 @@ int _write_handle( int fd, char *pBuff, int size ){
 /**@brief pipe just transit small data , the data size must be smaller than 10 bytes
 
 */
-void read_pipe( char *pBuff ){
-    read( mkvFds[0], pBuff , 10 ) ;  
-    return ;
+int read_pipe( char *pBuff ){
+    int ret = read( mkvFds[0], pBuff , 10 ) ;  
+    return ret;
 }
 
 /**@brief pipe just transit small data , the data size must be smaller than 10 bytes
