@@ -119,7 +119,8 @@ am__memcached_SOURCES_DIST = memcached.c memcached.h hash.c hash.h \
 	daemon.c stats.c stats.h util.c util.h trace.h cache.h \
 	sasl_defs.h dbopt.c dbopt.h errdesc.c errdesc.h mkvdb.c \
 	mkvdb.h tdb.h utility.c utility.h mkv_thread.c mkv_thread.h \
-	db_serv.c db_serv.h cache.c solaris_priv.c sasl_defs.c
+	db_serv.c db_serv.h msg_queue.c msg_queue.h cache.c \
+	solaris_priv.c sasl_defs.c
 @BUILD_CACHE_TRUE@am__objects_1 = memcached-cache.$(OBJEXT)
 @BUILD_SOLARIS_PRIVS_TRUE@am__objects_2 =  \
 @BUILD_SOLARIS_PRIVS_TRUE@	memcached-solaris_priv.$(OBJEXT)
@@ -133,7 +134,8 @@ am_memcached_OBJECTS = memcached-memcached.$(OBJEXT) \
 	memcached-dbopt.$(OBJEXT) memcached-errdesc.$(OBJEXT) \
 	memcached-mkvdb.$(OBJEXT) memcached-utility.$(OBJEXT) \
 	memcached-mkv_thread.$(OBJEXT) memcached-db_serv.$(OBJEXT) \
-	$(am__objects_1) $(am__objects_2) $(am__objects_3)
+	memcached-msg_queue.$(OBJEXT) $(am__objects_1) \
+	$(am__objects_2) $(am__objects_3)
 memcached_OBJECTS = $(am_memcached_OBJECTS)
 am__memcached_debug_SOURCES_DIST = memcached.c memcached.h hash.c \
 	hash.h jenkins_hash.c jenkins_hash.h murmur3_hash.c \
@@ -141,8 +143,8 @@ am__memcached_debug_SOURCES_DIST = memcached.c memcached.h hash.c \
 	thread.c daemon.c stats.c stats.h util.c util.h trace.h \
 	cache.h sasl_defs.h dbopt.c dbopt.h errdesc.c errdesc.h \
 	mkvdb.c mkvdb.h tdb.h utility.c utility.h mkv_thread.c \
-	mkv_thread.h db_serv.c db_serv.h cache.c solaris_priv.c \
-	sasl_defs.c
+	mkv_thread.h db_serv.c db_serv.h msg_queue.c msg_queue.h \
+	cache.c solaris_priv.c sasl_defs.c
 @BUILD_CACHE_TRUE@am__objects_4 = memcached_debug-cache.$(OBJEXT)
 @BUILD_SOLARIS_PRIVS_TRUE@am__objects_5 = memcached_debug-solaris_priv.$(OBJEXT)
 @ENABLE_SASL_TRUE@am__objects_6 = memcached_debug-sasl_defs.$(OBJEXT)
@@ -161,7 +163,8 @@ am__objects_7 = memcached_debug-memcached.$(OBJEXT) \
 	memcached_debug-mkvdb.$(OBJEXT) \
 	memcached_debug-utility.$(OBJEXT) \
 	memcached_debug-mkv_thread.$(OBJEXT) \
-	memcached_debug-db_serv.$(OBJEXT) $(am__objects_4) \
+	memcached_debug-db_serv.$(OBJEXT) \
+	memcached_debug-msg_queue.$(OBJEXT) $(am__objects_4) \
 	$(am__objects_5) $(am__objects_6)
 am_memcached_debug_OBJECTS = $(am__objects_7)
 memcached_debug_OBJECTS = $(am_memcached_debug_OBJECTS)
@@ -445,8 +448,8 @@ memcached_SOURCES = memcached.c memcached.h hash.c hash.h \
 	daemon.c stats.c stats.h util.c util.h trace.h cache.h \
 	sasl_defs.h dbopt.c dbopt.h errdesc.c errdesc.h mkvdb.c \
 	mkvdb.h tdb.h utility.c utility.h mkv_thread.c mkv_thread.h \
-	db_serv.c db_serv.h $(am__append_1) $(am__append_3) \
-	$(am__append_4)
+	db_serv.c db_serv.h msg_queue.c msg_queue.h $(am__append_1) \
+	$(am__append_3) $(am__append_4)
 memcached_debug_SOURCES = $(memcached_SOURCES)
 memcached_CPPFLAGS = -DNDEBUG
 memcached_debug_LDADD = @PROFILER_LDFLAGS@ -ltdb -L./thirdlib/ \
@@ -456,7 +459,7 @@ memcached_LDADD = -ltdb -L./thirdlib/ $(am__append_7)
 memcached_DEPENDENCIES = $(am__append_8)
 memcached_debug_DEPENDENCIES = $(am__append_10)
 CLEANFILES = $(am__append_6) $(am__append_11)
-SUBDIRS = doc
+SUBDIRS = doc 
 DIST_DIRS = scripts
 EXTRA_DIST = doc scripts t memcached.spec memcached_dtrace.d version.m4 README.md
 MOSTLYCLEANFILES = *.gcov *.gcno *.gcda *.tcov
@@ -599,6 +602,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memcached-memcached.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memcached-mkv_thread.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memcached-mkvdb.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memcached-msg_queue.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memcached-murmur3_hash.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memcached-sasl_defs.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memcached-slabs.Po@am__quote@
@@ -619,6 +623,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memcached_debug-memcached.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memcached_debug-mkv_thread.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memcached_debug-mkvdb.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memcached_debug-msg_queue.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memcached_debug-murmur3_hash.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memcached_debug-sasl_defs.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memcached_debug-slabs.Po@am__quote@
@@ -883,6 +888,20 @@ memcached-db_serv.obj: db_serv.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='db_serv.c' object='memcached-db_serv.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(memcached_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o memcached-db_serv.obj `if test -f 'db_serv.c'; then $(CYGPATH_W) 'db_serv.c'; else $(CYGPATH_W) '$(srcdir)/db_serv.c'; fi`
+
+memcached-msg_queue.o: msg_queue.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(memcached_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT memcached-msg_queue.o -MD -MP -MF $(DEPDIR)/memcached-msg_queue.Tpo -c -o memcached-msg_queue.o `test -f 'msg_queue.c' || echo '$(srcdir)/'`msg_queue.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/memcached-msg_queue.Tpo $(DEPDIR)/memcached-msg_queue.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='msg_queue.c' object='memcached-msg_queue.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(memcached_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o memcached-msg_queue.o `test -f 'msg_queue.c' || echo '$(srcdir)/'`msg_queue.c
+
+memcached-msg_queue.obj: msg_queue.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(memcached_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT memcached-msg_queue.obj -MD -MP -MF $(DEPDIR)/memcached-msg_queue.Tpo -c -o memcached-msg_queue.obj `if test -f 'msg_queue.c'; then $(CYGPATH_W) 'msg_queue.c'; else $(CYGPATH_W) '$(srcdir)/msg_queue.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/memcached-msg_queue.Tpo $(DEPDIR)/memcached-msg_queue.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='msg_queue.c' object='memcached-msg_queue.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(memcached_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o memcached-msg_queue.obj `if test -f 'msg_queue.c'; then $(CYGPATH_W) 'msg_queue.c'; else $(CYGPATH_W) '$(srcdir)/msg_queue.c'; fi`
 
 memcached-cache.o: cache.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(memcached_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT memcached-cache.o -MD -MP -MF $(DEPDIR)/memcached-cache.Tpo -c -o memcached-cache.o `test -f 'cache.c' || echo '$(srcdir)/'`cache.c
@@ -1163,6 +1182,20 @@ memcached_debug-db_serv.obj: db_serv.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='db_serv.c' object='memcached_debug-db_serv.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(memcached_debug_CFLAGS) $(CFLAGS) -c -o memcached_debug-db_serv.obj `if test -f 'db_serv.c'; then $(CYGPATH_W) 'db_serv.c'; else $(CYGPATH_W) '$(srcdir)/db_serv.c'; fi`
+
+memcached_debug-msg_queue.o: msg_queue.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(memcached_debug_CFLAGS) $(CFLAGS) -MT memcached_debug-msg_queue.o -MD -MP -MF $(DEPDIR)/memcached_debug-msg_queue.Tpo -c -o memcached_debug-msg_queue.o `test -f 'msg_queue.c' || echo '$(srcdir)/'`msg_queue.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/memcached_debug-msg_queue.Tpo $(DEPDIR)/memcached_debug-msg_queue.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='msg_queue.c' object='memcached_debug-msg_queue.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(memcached_debug_CFLAGS) $(CFLAGS) -c -o memcached_debug-msg_queue.o `test -f 'msg_queue.c' || echo '$(srcdir)/'`msg_queue.c
+
+memcached_debug-msg_queue.obj: msg_queue.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(memcached_debug_CFLAGS) $(CFLAGS) -MT memcached_debug-msg_queue.obj -MD -MP -MF $(DEPDIR)/memcached_debug-msg_queue.Tpo -c -o memcached_debug-msg_queue.obj `if test -f 'msg_queue.c'; then $(CYGPATH_W) 'msg_queue.c'; else $(CYGPATH_W) '$(srcdir)/msg_queue.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/memcached_debug-msg_queue.Tpo $(DEPDIR)/memcached_debug-msg_queue.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='msg_queue.c' object='memcached_debug-msg_queue.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(memcached_debug_CFLAGS) $(CFLAGS) -c -o memcached_debug-msg_queue.obj `if test -f 'msg_queue.c'; then $(CYGPATH_W) 'msg_queue.c'; else $(CYGPATH_W) '$(srcdir)/msg_queue.c'; fi`
 
 memcached_debug-cache.o: cache.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(memcached_debug_CFLAGS) $(CFLAGS) -MT memcached_debug-cache.o -MD -MP -MF $(DEPDIR)/memcached_debug-cache.Tpo -c -o memcached_debug-cache.o `test -f 'cache.c' || echo '$(srcdir)/'`cache.c

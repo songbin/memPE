@@ -177,7 +177,7 @@ rel_time_t realtime(const time_t exptime) {
 
 static void database_init(void){
     settings.db = mkv_init( settings.szDBName );
-    if( NULL == settings.db ) return;
+    if( !settings.usePrs ) return;
 
     if( ERR_OK != mkv_thread_init() )
         return ;

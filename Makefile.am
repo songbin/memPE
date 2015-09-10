@@ -21,7 +21,7 @@ memcached_SOURCES = memcached.c memcached.h \
                     trace.h cache.h sasl_defs.h \
 					dbopt.c dbopt.h errdesc.c errdesc.h mkvdb.c mkvdb.h tdb.h \
 					utility.c utility.h mkv_thread.c mkv_thread.h \
-					db_serv.c db_serv.h
+					db_serv.c db_serv.h msg_queue.c msg_queue.h
 
 if BUILD_CACHE
 memcached_SOURCES += cache.c
@@ -72,7 +72,7 @@ memcached_debug_dtrace.o: $(memcached_debug_OBJECTS)
 	$(DTRACE) $(DTRACEFLAGS) -G -o memcached_debug_dtrace.o -s ${srcdir}/memcached_dtrace.d $(memcached_debug_OBJECTS)
 
 
-SUBDIRS = doc
+SUBDIRS = doc 
 DIST_DIRS = scripts
 EXTRA_DIST = doc scripts t memcached.spec memcached_dtrace.d version.m4 README.md
 

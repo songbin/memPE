@@ -77,9 +77,9 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-build_triplet = x86_64-unknown-linux-gnu
-host_triplet = x86_64-unknown-linux-gnu
-target_triplet = x86_64-unknown-linux-gnu
+build_triplet = i686-pc-linux-gnu
+host_triplet = i686-pc-linux-gnu
+target_triplet = i686-pc-linux-gnu
 bin_PROGRAMS = memcached$(EXEEXT)
 noinst_PROGRAMS = memcached-debug$(EXEEXT) sizes$(EXEEXT) \
 	testapp$(EXEEXT) timedrun$(EXEEXT)
@@ -119,7 +119,8 @@ am__memcached_SOURCES_DIST = memcached.c memcached.h hash.c hash.h \
 	daemon.c stats.c stats.h util.c util.h trace.h cache.h \
 	sasl_defs.h dbopt.c dbopt.h errdesc.c errdesc.h mkvdb.c \
 	mkvdb.h tdb.h utility.c utility.h mkv_thread.c mkv_thread.h \
-	db_serv.c db_serv.h cache.c solaris_priv.c sasl_defs.c
+	db_serv.c db_serv.h msg_queue.c msg_queue.h cache.c \
+	solaris_priv.c sasl_defs.c
 am__objects_1 = memcached-cache.$(OBJEXT)
 #am__objects_2 =  \
 #	memcached-solaris_priv.$(OBJEXT)
@@ -133,7 +134,8 @@ am_memcached_OBJECTS = memcached-memcached.$(OBJEXT) \
 	memcached-dbopt.$(OBJEXT) memcached-errdesc.$(OBJEXT) \
 	memcached-mkvdb.$(OBJEXT) memcached-utility.$(OBJEXT) \
 	memcached-mkv_thread.$(OBJEXT) memcached-db_serv.$(OBJEXT) \
-	$(am__objects_1) $(am__objects_2) $(am__objects_3)
+	memcached-msg_queue.$(OBJEXT) $(am__objects_1) \
+	$(am__objects_2) $(am__objects_3)
 memcached_OBJECTS = $(am_memcached_OBJECTS)
 am__memcached_debug_SOURCES_DIST = memcached.c memcached.h hash.c \
 	hash.h jenkins_hash.c jenkins_hash.h murmur3_hash.c \
@@ -141,8 +143,8 @@ am__memcached_debug_SOURCES_DIST = memcached.c memcached.h hash.c \
 	thread.c daemon.c stats.c stats.h util.c util.h trace.h \
 	cache.h sasl_defs.h dbopt.c dbopt.h errdesc.c errdesc.h \
 	mkvdb.c mkvdb.h tdb.h utility.c utility.h mkv_thread.c \
-	mkv_thread.h db_serv.c db_serv.h cache.c solaris_priv.c \
-	sasl_defs.c
+	mkv_thread.h db_serv.c db_serv.h msg_queue.c msg_queue.h \
+	cache.c solaris_priv.c sasl_defs.c
 am__objects_4 = memcached_debug-cache.$(OBJEXT)
 #am__objects_5 = memcached_debug-solaris_priv.$(OBJEXT)
 #am__objects_6 = memcached_debug-sasl_defs.$(OBJEXT)
@@ -161,7 +163,8 @@ am__objects_7 = memcached_debug-memcached.$(OBJEXT) \
 	memcached_debug-mkvdb.$(OBJEXT) \
 	memcached_debug-utility.$(OBJEXT) \
 	memcached_debug-mkv_thread.$(OBJEXT) \
-	memcached_debug-db_serv.$(OBJEXT) $(am__objects_4) \
+	memcached_debug-db_serv.$(OBJEXT) \
+	memcached_debug-msg_queue.$(OBJEXT) $(am__objects_4) \
 	$(am__objects_5) $(am__objects_6)
 am_memcached_debug_OBJECTS = $(am__objects_7)
 memcached_debug_OBJECTS = $(am_memcached_debug_OBJECTS)
@@ -328,12 +331,12 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = ${SHELL} /home/todd/smbshare/workpro/github/memPE/missing aclocal-1.14
+ACLOCAL = ${SHELL} /home/todd/smbshare/codes/owner/workpro/memPE-master/missing aclocal-1.14
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
-AUTOCONF = ${SHELL} /home/todd/smbshare/workpro/github/memPE/missing autoconf
-AUTOHEADER = ${SHELL} /home/todd/smbshare/workpro/github/memPE/missing autoheader
-AUTOMAKE = ${SHELL} /home/todd/smbshare/workpro/github/memPE/missing automake-1.14
+AUTOCONF = ${SHELL} /home/todd/smbshare/codes/owner/workpro/memPE-master/missing autoconf
+AUTOHEADER = ${SHELL} /home/todd/smbshare/codes/owner/workpro/memPE-master/missing autoheader
+AUTOMAKE = ${SHELL} /home/todd/smbshare/codes/owner/workpro/memPE-master/missing automake-1.14
 AWK = mawk
 CC = gcc -std=gnu99
 CCDEPMODE = depmode=gcc3
@@ -361,7 +364,7 @@ LDFLAGS =
 LIBOBJS = 
 LIBS = -levent 
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /home/todd/smbshare/workpro/github/memPE/missing makeinfo
+MAKEINFO = ${SHELL} /home/todd/smbshare/codes/owner/workpro/memPE-master/missing makeinfo
 MKDIR_P = /bin/mkdir -p
 OBJEXT = o
 PACKAGE = memcached
@@ -381,10 +384,10 @@ STRIP =
 VERSION = 1.4.22
 XML2RFC = no
 XSLTPROC = no
-abs_builddir = /home/todd/smbshare/workpro/github/memPE
-abs_srcdir = /home/todd/smbshare/workpro/github/memPE
-abs_top_builddir = /home/todd/smbshare/workpro/github/memPE
-abs_top_srcdir = /home/todd/smbshare/workpro/github/memPE
+abs_builddir = /home/todd/smbshare/codes/owner/workpro/memPE-master
+abs_srcdir = /home/todd/smbshare/codes/owner/workpro/memPE-master
+abs_top_builddir = /home/todd/smbshare/codes/owner/workpro/memPE-master
+abs_top_srcdir = /home/todd/smbshare/codes/owner/workpro/memPE-master
 ac_ct_CC = gcc
 am__include = include
 am__leading_dot = .
@@ -392,26 +395,26 @@ am__quote =
 am__tar = $${TAR-tar} chof - "$$tardir"
 am__untar = $${TAR-tar} xf -
 bindir = ${exec_prefix}/bin
-build = x86_64-unknown-linux-gnu
+build = i686-pc-linux-gnu
 build_alias = 
-build_cpu = x86_64
+build_cpu = i686
 build_os = linux-gnu
-build_vendor = unknown
+build_vendor = pc
 builddir = .
 datadir = ${datarootdir}
 datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
-host = x86_64-unknown-linux-gnu
+host = i686-pc-linux-gnu
 host_alias = 
-host_cpu = x86_64
+host_cpu = i686
 host_os = linux-gnu
-host_vendor = unknown
+host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/todd/smbshare/workpro/github/memPE/install-sh
+install_sh = ${SHELL} /home/todd/smbshare/codes/owner/workpro/memPE-master/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -427,11 +430,11 @@ sbindir = ${exec_prefix}/sbin
 sharedstatedir = ${prefix}/com
 srcdir = .
 sysconfdir = ${prefix}/etc
-target = x86_64-unknown-linux-gnu
+target = i686-pc-linux-gnu
 target_alias = 
-target_cpu = x86_64
+target_cpu = i686
 target_os = linux-gnu
-target_vendor = unknown
+target_vendor = pc
 top_build_prefix = 
 top_builddir = .
 top_srcdir = .
@@ -445,8 +448,8 @@ memcached_SOURCES = memcached.c memcached.h hash.c hash.h \
 	daemon.c stats.c stats.h util.c util.h trace.h cache.h \
 	sasl_defs.h dbopt.c dbopt.h errdesc.c errdesc.h mkvdb.c \
 	mkvdb.h tdb.h utility.c utility.h mkv_thread.c mkv_thread.h \
-	db_serv.c db_serv.h $(am__append_1) $(am__append_3) \
-	$(am__append_4)
+	db_serv.c db_serv.h msg_queue.c msg_queue.h $(am__append_1) \
+	$(am__append_3) $(am__append_4)
 memcached_debug_SOURCES = $(memcached_SOURCES)
 memcached_CPPFLAGS = -DNDEBUG
 memcached_debug_LDADD = -lgcov -ltdb -L./thirdlib/ \
@@ -456,7 +459,7 @@ memcached_LDADD = -ltdb -L./thirdlib/ $(am__append_7)
 memcached_DEPENDENCIES = $(am__append_8)
 memcached_debug_DEPENDENCIES = $(am__append_10)
 CLEANFILES = $(am__append_6) $(am__append_11)
-SUBDIRS = doc
+SUBDIRS = doc 
 DIST_DIRS = scripts
 EXTRA_DIST = doc scripts t memcached.spec memcached_dtrace.d version.m4 README.md
 MOSTLYCLEANFILES = *.gcov *.gcno *.gcda *.tcov
@@ -599,6 +602,7 @@ include ./$(DEPDIR)/memcached-jenkins_hash.Po
 include ./$(DEPDIR)/memcached-memcached.Po
 include ./$(DEPDIR)/memcached-mkv_thread.Po
 include ./$(DEPDIR)/memcached-mkvdb.Po
+include ./$(DEPDIR)/memcached-msg_queue.Po
 include ./$(DEPDIR)/memcached-murmur3_hash.Po
 include ./$(DEPDIR)/memcached-sasl_defs.Po
 include ./$(DEPDIR)/memcached-slabs.Po
@@ -619,6 +623,7 @@ include ./$(DEPDIR)/memcached_debug-jenkins_hash.Po
 include ./$(DEPDIR)/memcached_debug-memcached.Po
 include ./$(DEPDIR)/memcached_debug-mkv_thread.Po
 include ./$(DEPDIR)/memcached_debug-mkvdb.Po
+include ./$(DEPDIR)/memcached_debug-msg_queue.Po
 include ./$(DEPDIR)/memcached_debug-murmur3_hash.Po
 include ./$(DEPDIR)/memcached_debug-sasl_defs.Po
 include ./$(DEPDIR)/memcached_debug-slabs.Po
@@ -883,6 +888,20 @@ memcached-db_serv.obj: db_serv.c
 #	$(AM_V_CC)source='db_serv.c' object='memcached-db_serv.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
 #	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(memcached_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o memcached-db_serv.obj `if test -f 'db_serv.c'; then $(CYGPATH_W) 'db_serv.c'; else $(CYGPATH_W) '$(srcdir)/db_serv.c'; fi`
+
+memcached-msg_queue.o: msg_queue.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(memcached_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT memcached-msg_queue.o -MD -MP -MF $(DEPDIR)/memcached-msg_queue.Tpo -c -o memcached-msg_queue.o `test -f 'msg_queue.c' || echo '$(srcdir)/'`msg_queue.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/memcached-msg_queue.Tpo $(DEPDIR)/memcached-msg_queue.Po
+#	$(AM_V_CC)source='msg_queue.c' object='memcached-msg_queue.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(memcached_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o memcached-msg_queue.o `test -f 'msg_queue.c' || echo '$(srcdir)/'`msg_queue.c
+
+memcached-msg_queue.obj: msg_queue.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(memcached_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT memcached-msg_queue.obj -MD -MP -MF $(DEPDIR)/memcached-msg_queue.Tpo -c -o memcached-msg_queue.obj `if test -f 'msg_queue.c'; then $(CYGPATH_W) 'msg_queue.c'; else $(CYGPATH_W) '$(srcdir)/msg_queue.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/memcached-msg_queue.Tpo $(DEPDIR)/memcached-msg_queue.Po
+#	$(AM_V_CC)source='msg_queue.c' object='memcached-msg_queue.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(memcached_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o memcached-msg_queue.obj `if test -f 'msg_queue.c'; then $(CYGPATH_W) 'msg_queue.c'; else $(CYGPATH_W) '$(srcdir)/msg_queue.c'; fi`
 
 memcached-cache.o: cache.c
 	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(memcached_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT memcached-cache.o -MD -MP -MF $(DEPDIR)/memcached-cache.Tpo -c -o memcached-cache.o `test -f 'cache.c' || echo '$(srcdir)/'`cache.c
@@ -1163,6 +1182,20 @@ memcached_debug-db_serv.obj: db_serv.c
 #	$(AM_V_CC)source='db_serv.c' object='memcached_debug-db_serv.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
 #	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(memcached_debug_CFLAGS) $(CFLAGS) -c -o memcached_debug-db_serv.obj `if test -f 'db_serv.c'; then $(CYGPATH_W) 'db_serv.c'; else $(CYGPATH_W) '$(srcdir)/db_serv.c'; fi`
+
+memcached_debug-msg_queue.o: msg_queue.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(memcached_debug_CFLAGS) $(CFLAGS) -MT memcached_debug-msg_queue.o -MD -MP -MF $(DEPDIR)/memcached_debug-msg_queue.Tpo -c -o memcached_debug-msg_queue.o `test -f 'msg_queue.c' || echo '$(srcdir)/'`msg_queue.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/memcached_debug-msg_queue.Tpo $(DEPDIR)/memcached_debug-msg_queue.Po
+#	$(AM_V_CC)source='msg_queue.c' object='memcached_debug-msg_queue.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(memcached_debug_CFLAGS) $(CFLAGS) -c -o memcached_debug-msg_queue.o `test -f 'msg_queue.c' || echo '$(srcdir)/'`msg_queue.c
+
+memcached_debug-msg_queue.obj: msg_queue.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(memcached_debug_CFLAGS) $(CFLAGS) -MT memcached_debug-msg_queue.obj -MD -MP -MF $(DEPDIR)/memcached_debug-msg_queue.Tpo -c -o memcached_debug-msg_queue.obj `if test -f 'msg_queue.c'; then $(CYGPATH_W) 'msg_queue.c'; else $(CYGPATH_W) '$(srcdir)/msg_queue.c'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/memcached_debug-msg_queue.Tpo $(DEPDIR)/memcached_debug-msg_queue.Po
+#	$(AM_V_CC)source='msg_queue.c' object='memcached_debug-msg_queue.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(memcached_debug_CFLAGS) $(CFLAGS) -c -o memcached_debug-msg_queue.obj `if test -f 'msg_queue.c'; then $(CYGPATH_W) 'msg_queue.c'; else $(CYGPATH_W) '$(srcdir)/msg_queue.c'; fi`
 
 memcached_debug-cache.o: cache.c
 	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(memcached_debug_CFLAGS) $(CFLAGS) -MT memcached_debug-cache.o -MD -MP -MF $(DEPDIR)/memcached_debug-cache.Tpo -c -o memcached_debug-cache.o `test -f 'cache.c' || echo '$(srcdir)/'`cache.c

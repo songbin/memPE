@@ -130,7 +130,7 @@
 /* #undef HAVE_GETDENTS */
 
 /* Define to 1 if you have the `getdirentries' function. */
-/* #undef HAVE_GETDIRENTRIES */
+#define HAVE_GETDIRENTRIES 1
 
 /* Define to 1 if you have the `getgrent_r' function. */
 #define HAVE_GETGRENT_R 1
@@ -616,7 +616,7 @@
 #define SIZEOF_INT 4
 
 /* The size of `long', as computed by sizeof. */
-#define SIZEOF_LONG 4
+#define SIZEOF_LONG 8
 
 /* The size of `long long', as computed by sizeof. */
 #define SIZEOF_LONG_LONG 8
@@ -628,10 +628,10 @@
 #define SIZEOF_SHORT 2
 
 /* The size of `size_t', as computed by sizeof. */
-#define SIZEOF_SIZE_T 4
+#define SIZEOF_SIZE_T 8
 
 /* The size of `ssize_t', as computed by sizeof. */
-#define SIZEOF_SSIZE_T 4
+#define SIZEOF_SSIZE_T 8
 
 /* getgrent_r irix (similar to solaris) function prototype */
 /* #undef SOLARIS_GETGRENT_R */
@@ -683,7 +683,7 @@
 #endif
 
 /* Number of bits in a file offset, on hosts where this is settable. */
-#define _FILE_OFFSET_BITS 64
+/* #undef _FILE_OFFSET_BITS */
 
 /* Define for large files, on AIX-style hosts. */
 /* #undef _LARGE_FILES */

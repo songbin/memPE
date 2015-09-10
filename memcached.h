@@ -4,6 +4,8 @@
  * The main memcached header holding commonly used data
  * structures and function prototypes.
  */
+#ifndef MEMCACHE_GLOBAL_H
+#define MEMCACHE_GLOBAL_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -644,4 +646,5 @@ enum process_type{
 
 int process_item(item *item, enum process_type type);
 
+#endif
 

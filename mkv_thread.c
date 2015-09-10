@@ -13,16 +13,17 @@
 #include <sys/ipc.h>
 #include <sys/msg.h>
 
-static LIBEVENT_THREAD mkv_thread;
-//static pthread_mutex_t dq_free_list_lock;
+#include "msg_queue.h"
+
+#define USE_QUEUE_LIST //use the queue which we designed instead of linux's msg queue
+
+
 
 typedef struct DBItem{
     item *item;
     enum process_type action;
     struct DBItem *next;
 }DBITEM;
-
-
 
 typedef struct DBItemQueue{
     DBITEM *head;
@@ -32,31 +33,16 @@ typedef struct DBItemQueue{
 
 #define ITEMS_PER_ALLOC 128
 
-/*define for msg queue starts*/
-typedef struct msgitem{
-    item *item;
-    enum process_type action;
-}MSGITEM;
-const long int g_msg_type = 1;
-static int g_msgid;
-#define KEYT 1234
-#define ITEM_SIZE sizeof(MSGITEM)
-/*struct for msg queue*/
-typedef struct msg_st  
-{  
-    long int msg_type;  
-    unsigned char data[ITEM_SIZE*2];  
-}MSGST;
-/*define for msg queue ends*/
-
 static bool bLoop = false;
 static unsigned char g_key[KEY_MAX_LENGTH] = {0x0};
+static LIBEVENT_THREAD mkv_thread;
 
 static int _save_item(item *item);
 static int _del_item(item *item);
 static int _item_arithmetic(item *item);
 static int _item_flush();
 static int _item_touch(item *item);
+static int _update_database(enum process_type action, item *item);
 
 /**@brief process the item[save or delete]
  * @param item [in] the item which will be processed 
@@ -64,32 +50,20 @@ static int _item_touch(item *item);
  */
 int process_item(item *item, enum process_type type){
     int ret = ERR_OK;
+
+    if(!settings.usePrs)
+        return ERR_OK;
     
     if( NULL == item && enum_flush_item != type )
         return ERR_NULL;
 
     char buf[1] = {0x0}; 
-
-    DBITEM * dbitem = malloc( sizeof(DBITEM) );
-    if( !dbitem ) 
-        return ERR_STRING_NULL;
     
-    dbitem->item = item;
-    dbitem->action = type;
+    if( 0 != queue_push(item, type) ){
+        printf("push failed\n");
+        return ERR_FAIL;
+    }
 
-    MSGST msgst;
-    MSGITEM msgitem;
-    msgst.msg_type = g_msg_type;
-    msgitem.action = type;
-    msgitem.item = item;
-
-    
-    memmove((void*)msgst.data, (void*)&msgitem, sizeof(MSGITEM));
-    if(msgsnd(g_msgid, (void*)&msgst, sizeof(MSGITEM), 0) == -1)  
-    {  
-        fprintf(stderr, "msgsnd failed[%s]\n",strerror(errno));  
-        return ERR_FAIL; 
-    } 
     if( !bLoop ){
         buf[0] = FLAG_PRO_ITEM;
         if ( write_pipe( buf, 1 ) != 1 ) {
@@ -137,8 +111,7 @@ int _save_item(item *item){
     if( size > MAX_CHUNK && pValue ){
         free(pValue);
     }
-
-   
+    
     return ret;
 }
 
@@ -177,7 +150,11 @@ static int _item_touch(item *item){
 int mkv_thread_init(void){
     pthread_t ntid;
     pthread_attr_t attr;
-    
+     
+    if( 0 != queue_init() ){
+        return ERR_FAIL;
+    }
+
     pthread_attr_init( &attr );
     if( 0 != pthread_create(&ntid , &attr , _mkv_start_thread , (void*)&mkv_thread) ){
         return ERR_THREAD_FAILED;
@@ -191,15 +168,7 @@ int mkv_thread_init(void){
     }
 
     mkv_thread.notify_receive_fd = mkvFds[0];
-    mkv_thread.notify_send_fd = mkvFds[1];
-
-    g_msgid = msgget((key_t)KEYT, 0666 | IPC_CREAT);  
-    if(g_msgid == -1)  
-    {  
-        fprintf(stderr, "msgget failed with error: %d\n", errno);  
-        return ERR_FAIL; 
-    }  
-    
+    mkv_thread.notify_send_fd = mkvFds[1];    
     
     return 0;   
 }
@@ -238,56 +207,31 @@ int _mkv_setup_thread(void *args){
         exit(1);
     }
 
-    event_base_loop(me->base, 0);
-    
+    event_base_loop(me->base, 0); 
     return ERR_OK;
 }
 
-void _mkv_process_queue(int fd, short which, void *args){
+void _mkv_process_queue(int fd, short which, void *args){  
     char pipe[20] = {0x0};
-    MSGITEM msgitem;
-    MSGST msgst;
-    
+    QLItem *qitem = NULL;
     read_pipe( pipe );
     if( pipe[0] == FLAG_PRO_ITEM ){
         bLoop = true;
     }
-
-
-    while(bLoop){
-        if(msgrcv(g_msgid, (void*)&msgst, sizeof(MSGITEM), g_msg_type, 0) == -1)  
-        {  
-            fprintf(stderr, "msgrcv failed with errno: %d\n", errno);  
-            continue; 
+    
+    while(bLoop){       
+        qitem = queue_pop();
+        if( NULL == qitem ){
+            fprintf(stderr, "msg queue is null !\n");  
+            bLoop = false;
+            continue;
         }
-
-        memmove(&msgitem, (void*)msgst.data, sizeof(MSGITEM));
-        switch(msgitem.action){
-            case enum_save_item:
-                _save_item(msgitem.item);
-                break;
-            case enum_del_item:
-                _del_item(msgitem.item);
-                break;
-            case enum_item_incr:
-            case enum_item_decr:
-                _item_arithmetic(msgitem.item);
-                break;
-            case enum_flush_item:
-                _item_flush();
-                break;
-            case enum_touch_item:
-                _item_touch(msgitem.item);
-                break;
-            default:
-                printf("default comming\n");
-                break;
-        }
+        _update_database(qitem->action,qitem->item);
+        free(qitem);
+        qitem = NULL;   
     }
 
-    bLoop = false;
-
-    return;
+    return; 
 }
 
 
@@ -296,7 +240,6 @@ int _read_handle( int fd, char **pBuff, int *size ){
     int cnt = 1;
     int ret = ERR_OK;
     int len = 0;
-    
     *size = 0;
 
     *pBuff = (char*)calloc( sizeof(char), 1024 );
@@ -352,5 +295,32 @@ int write_pipe( char *pBuff, int size ){
     }
 
     return ERR_OK;
+}
+
+int _update_database(enum process_type action, item *item){
+    int ret;
+    switch(action){
+            case enum_save_item:
+                ret = _save_item(item);
+                fprintf(stderr, "save[%d]...\n",ret); 
+                break;
+            case enum_del_item:
+                ret = _del_item(item);
+                break;
+            case enum_item_incr:
+            case enum_item_decr:
+                ret = _item_arithmetic(item);
+                break;
+            case enum_flush_item:
+                ret = _item_flush();
+                break;
+            case enum_touch_item:
+                ret = _item_touch(item);
+                break;
+            default:
+                printf("default comming\n");
+                break;
+        }
+    return ret;
 }
 

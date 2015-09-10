@@ -142,16 +142,16 @@ NROFF = nroff
 MANS = $(man_MANS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/todd/smbshare/workpro/github/memPE/missing aclocal-1.14
+ACLOCAL = ${SHELL} /home/todd/linux-share/mempe/memPE/missing aclocal-1.14
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
-AUTOCONF = ${SHELL} /home/todd/smbshare/workpro/github/memPE/missing autoconf
-AUTOHEADER = ${SHELL} /home/todd/smbshare/workpro/github/memPE/missing autoheader
-AUTOMAKE = ${SHELL} /home/todd/smbshare/workpro/github/memPE/missing automake-1.14
+AUTOCONF = ${SHELL} /home/todd/linux-share/mempe/memPE/missing autoconf
+AUTOHEADER = ${SHELL} /home/todd/linux-share/mempe/memPE/missing autoheader
+AUTOMAKE = ${SHELL} /home/todd/linux-share/mempe/memPE/missing automake-1.14
 AWK = mawk
 CC = gcc -std=gnu99
 CCDEPMODE = depmode=gcc3
-CFLAGS = -ggdb -O0 -pthread -pthread -Wall -Werror -pedantic -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls
+CFLAGS = -g -O2 -pthread -pthread -Wall -Werror -pedantic -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls
 CPP = gcc -E
 CPPFLAGS = 
 CYGPATH_W = echo
@@ -175,7 +175,7 @@ LDFLAGS =
 LIBOBJS = 
 LIBS = -levent 
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /home/todd/smbshare/workpro/github/memPE/missing makeinfo
+MAKEINFO = ${SHELL} /home/todd/linux-share/mempe/memPE/missing makeinfo
 MKDIR_P = /bin/mkdir -p
 OBJEXT = o
 PACKAGE = memcached
@@ -195,10 +195,10 @@ STRIP =
 VERSION = 1.4.22
 XML2RFC = no
 XSLTPROC = no
-abs_builddir = /home/todd/smbshare/workpro/github/memPE/doc
-abs_srcdir = /home/todd/smbshare/workpro/github/memPE/doc
-abs_top_builddir = /home/todd/smbshare/workpro/github/memPE
-abs_top_srcdir = /home/todd/smbshare/workpro/github/memPE
+abs_builddir = /home/todd/linux-share/mempe/memPE/doc
+abs_srcdir = /home/todd/linux-share/mempe/memPE/doc
+abs_top_builddir = /home/todd/linux-share/mempe/memPE
+abs_top_srcdir = /home/todd/linux-share/mempe/memPE
 ac_ct_CC = gcc
 am__include = include
 am__leading_dot = .
@@ -225,7 +225,7 @@ host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/todd/smbshare/workpro/github/memPE/install-sh
+install_sh = ${SHELL} /home/todd/linux-share/mempe/memPE/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -492,10 +492,10 @@ uninstall-man: uninstall-man1
 
 
 protocol-binary.txt: $(.TARGET:R).full
-	no -c /home/todd/smbshare/workpro/github/memPE/doc $(.TARGET:R).full $@
+	no -c /home/todd/linux-share/mempe/memPE/doc $(.TARGET:R).full $@
 
 protocol-binary-range.txt: $(.TARGET:R).full
-	no -c /home/todd/smbshare/workpro/github/memPE/doc $(.TARGET:R).full $@
+	no -c /home/todd/linux-share/mempe/memPE/doc $(.TARGET:R).full $@
 
 protocol-binary.full: $(.TARGET:R).xml xml2rfc/rfc2629-noinc.xsl
 	no --nonet xml2rfc/rfc2629-noinc.xsl $(.TARGET:R).xml > $@
